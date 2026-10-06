@@ -1,0 +1,116 @@
+name: LectoAI
+options:
+  minimumXcodeGenVersion: 2.44.0
+  deploymentTarget:
+    macOS: '26.0'
+  developmentLanguage: zh-Hans
+settings:
+  base:
+    SWIFT_VERSION: '6.0'
+    SWIFT_STRICT_CONCURRENCY: complete
+    MACOSX_DEPLOYMENT_TARGET: '26.0'
+    ARCHS: arm64
+    ENABLE_HARDENED_RUNTIME: YES
+    MARKETING_VERSION: 0.5.0
+    CURRENT_PROJECT_VERSION: 12
+configFiles:
+  Debug: Config/Debug.xcconfig
+  Release: Config/Release.xcconfig
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle.git
+    exactVersion: 2.9.6
+  WhisperKit:
+    url: https://github.com/argmaxinc/WhisperKit.git
+    revision: e2adabbe7d98dc4d0ab9a5b75424ecc42a9cdbef
+  LectoAICore:
+    path: LectoAICore
+targets:
+  LectoAI:
+    type: application
+    platform: macOS
+    sources: [LectoAI]
+    dependencies:
+      - package: LectoAICore
+      - package: WhisperKit
+        product: WhisperKit
+      - package: Sparkle
+        product: Sparkle
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.lectoai.mac.dev
+        GENERATE_INFOPLIST_FILE: NO
+        SWIFT_EMIT_LOC_STRINGS: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    info:
+      path: Config/Info.plist
+      properties:
+        CFBundleDisplayName: LectoAI
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        SUEnableInstallerLauncherService: true
+        SUEnableAutomaticChecks: false
+        SUAutomaticallyUpdate: false
+        SUAllowsAutomaticUpdates: false
+        SUFeedURL: $(LECTOAI_UPDATE_FEED)
+        SUPublicEDKey: $(LECTOAI_UPDATE_PUBLIC_KEY)
+        LSApplicationCategoryType: public.app-category.education
+        NSMicrophoneUsageDescription: LectoAI 使用麦克风录制课堂声音，在本机生成字幕。
+        NSAudioCaptureUsageDescription: LectoAI 录制你选择的电脑音频，用于网课字幕。
+    entitlements:
+      path: Config/LectoAI.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.device.audio-input: true
+        com.apple.security.files.user-selected.read-write: true
+        com.apple.security.files.bookmarks.app-scope: true
+        com.apple.security.network.client: true
+        com.apple.security.temporary-exception.mach-lookup.global-name:
+          - $(PRODUCT_BUNDLE_IDENTIFIER)-spks
+          - $(PRODUCT_BUNDLE_IDENTIFIER)-spki
+  LectoAIBench:
+    type: tool
+    platform: macOS
+    sources: [LectoAIBench]
+    dependencies:
+      - package: LectoAICore
+      - package: WhisperKit
+        product: WhisperKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.lectoai.mac.bench
+  LectoAICoreTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [LectoAICore/Tests/LectoAICoreTests]
+    dependencies:
+      - package: LectoAICore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.lectoai.mac.coretests
+        GENERATE_INFOPLIST_FILE: YES
+  LectoAIUITests:
+    type: bundle.ui-testing
+    platform: macOS
+    sources: [LectoAIUITests]
+    dependencies:
+      - target: LectoAI
+    settings:
+      base:
+        ENABLE_HARDENED_RUNTIME: NO
+        PRODUCT_BUNDLE_IDENTIFIER: com.lectoai.mac.uitests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  LectoAI:
+    build:
+      targets:
+        LectoAI: all
+        LectoAIBench: all
+    test:
+      targets: [LectoAICoreTests]
+  LectoAI-UI:
+    build:
+      targets:
+        LectoAI: all
+    test:
+      targets: [LectoAIUITests]

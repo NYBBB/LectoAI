@@ -1,0 +1,33 @@
+# 系统与编辑器
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/
+
+# 本机工具配置
+.claude/
+CLAUDE.local.md
+
+# 维护者私有笔记（架构、路线图、开发日志等），是独立的本地仓库，不进公开版本库
+.notes/
+
+# 生成的工程与构建产物
+*.xcodeproj/
+build/
+DerivedData/
+**/.build/
+**/.swiftpm/
+*.xcresult/
+
+# 签名、更新密钥与发布配置（只放在发布者本机）
+Config/Signing.local.xcconfig
+*.p12
+*.pem
+*.mobileprovision
+*.provisionprofile
+
+# 本机录音样本与下载的模型（体积大，可能含真实课堂内容）
+Samples/
+Models/
+*.dmg

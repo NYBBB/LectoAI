@@ -1,0 +1,2 @@
+# 仓库统一使用 LF，避免 Windows/Mac 之间拷贝后出现整文件换行差异
+* text=auto eol=lf

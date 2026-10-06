@@ -1,0 +1,4 @@
+// 将这两个非秘密值放入本地签名配置；更新私钥只保存在发布机器钥匙串。
+// URL 的斜杠采用 Xcode 配置转义，避免被视为注释。
+LECTOAI_UPDATE_FEED = https:/$()/updates.example.com/lectoai/appcast.xml
+LECTOAI_UPDATE_PUBLIC_KEY =

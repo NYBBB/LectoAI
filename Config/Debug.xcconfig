@@ -1,0 +1,6 @@
+// 本地开发默认临时签名，不要求开发者账户。
+CODE_SIGN_IDENTITY = -
+CODE_SIGN_STYLE = Manual
+// 临时签名没有 Team ID，不能启用要求同团队动态库的运行时校验。
+ENABLE_HARDENED_RUNTIME = NO
+#include? "Signing.local.xcconfig"

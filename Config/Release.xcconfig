@@ -1,0 +1,3 @@
+// 分发前由本地文件提供真实团队和签名身份。
+CODE_SIGN_STYLE = Manual
+#include? "Signing.local.xcconfig"
